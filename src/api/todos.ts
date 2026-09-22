@@ -14,3 +14,10 @@ export const postTodo = (data: Omit<Todo, 'id'>) => {
 export const deleteTodo = (id: number) => {
   return client.delete(`/todos/${id}`);
 };
+
+export const patchTodo = (
+  id: number,
+  data: { completed?: boolean; title?: string },
+) => {
+  return client.patch(`/todos/${id}`, data);
+};

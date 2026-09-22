@@ -1,15 +1,25 @@
-import React from 'react';
 import { Todo } from '../../types/Todo';
 import { TodoComponent } from '../Todo/TodoComponent';
 
 type Props = {
   todos: Todo[];
   tempTodo: Todo | null;
-  onDelete: (todoId: number) => Promise<unknown>;
-  deleteQueue: number[];
+  onDelete: (todo: Todo) => Promise<unknown>;
+  deleteQueue: Todo[];
+  onToggle: (todo: Todo) => Promise<unknown>;
+  toggleQueue: Todo[];
+  handleUpdate: (todo: Todo, newTitle: string) => Promise<boolean>;
 };
 
-export const TodoList = ({ todos, tempTodo, onDelete, deleteQueue }: Props) => {
+export const TodoList = ({
+  todos,
+  tempTodo,
+  onDelete,
+  deleteQueue,
+  onToggle,
+  toggleQueue,
+  handleUpdate,
+}: Props) => {
   return (
     <section className="todoapp__main" data-cy="TodoList">
       {todos.map(todo => {
@@ -19,6 +29,9 @@ export const TodoList = ({ todos, tempTodo, onDelete, deleteQueue }: Props) => {
             onDelete={onDelete}
             deleteQueue={deleteQueue}
             key={todo.id}
+            onToggle={onToggle}
+            toggleQueue={toggleQueue}
+            handleUpdate={handleUpdate}
           />
         );
       })}

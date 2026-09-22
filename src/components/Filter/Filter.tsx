@@ -7,7 +7,7 @@ type Props = { filterBy: (filterCriteria: Filters) => void };
 export const Filter = ({ filterBy }: Props) => {
   const [filterCriteria, setFilterCriteria] = useState<Filters>(Filters.ALL);
 
-  const handleOnClick = useRef(
+  const handleClick = useRef(
     (
       event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
       filter: Filters,
@@ -27,7 +27,7 @@ export const Filter = ({ filterBy }: Props) => {
           selected: filterCriteria === Filters.ALL,
         })}
         data-cy="FilterLinkAll"
-        onClick={event => handleOnClick.current(event, Filters.ALL)}
+        onClick={event => handleClick.current(event, Filters.ALL)}
       >
         All
       </a>
@@ -38,7 +38,7 @@ export const Filter = ({ filterBy }: Props) => {
           selected: filterCriteria === Filters.ACTIVE,
         })}
         data-cy="FilterLinkActive"
-        onClick={event => handleOnClick.current(event, Filters.ACTIVE)}
+        onClick={event => handleClick.current(event, Filters.ACTIVE)}
       >
         Active
       </a>
@@ -49,7 +49,7 @@ export const Filter = ({ filterBy }: Props) => {
           selected: filterCriteria === Filters.COMPLETED,
         })}
         data-cy="FilterLinkCompleted"
-        onClick={event => handleOnClick.current(event, Filters.COMPLETED)}
+        onClick={event => handleClick.current(event, Filters.COMPLETED)}
       >
         Completed
       </a>
