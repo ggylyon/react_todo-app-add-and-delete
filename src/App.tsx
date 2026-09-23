@@ -34,12 +34,12 @@ export const App: React.FC = () => {
   );
 
   const uncompletedTodos = useMemo(
-    () => todos.filter(todo => !todo.completed),
+    () => filterBy(todos, Filters.ACTIVE),
     [todos],
   );
 
   const completedTodos = useMemo(
-    () => todos.filter(todo => todo.completed),
+    () => filterBy(todos, Filters.COMPLETED),
     [todos],
   );
 
@@ -47,31 +47,20 @@ export const App: React.FC = () => {
 
   const notificationID = useRef(setTimeout(() => {}));
 
-  const handleNotification = useRef((errorMessage: string) => {
+  const handleNotification = (errorMessage: string) => {
     setNotificationText(errorMessage);
 
     clearInterval(notificationID.current);
     notificationID.current = setTimeout(() => setNotificationText(''), 3000);
-  });
+  };
 
   useEffect(() => {
     getTodos()
       .then(response => {
-        const formattedResponse = response.map(todo => {
-          const formattedTodo = {
-            title: todo.title,
-            id: todo.id,
-            userId: todo.userId,
-            completed: todo.completed,
-          };
-
-          return formattedTodo;
-        });
-
-        setTodos(formattedResponse);
+        setTodos(response);
       })
       .catch(() => {
-        handleNotification.current('Unable to load todos');
+        handleNotification('Unable to load todos');
       });
   }, []);
 
@@ -80,7 +69,7 @@ export const App: React.FC = () => {
 
   function handleSubmit(inputQuery: string) {
     if (!inputQuery.trim()) {
-      handleNotification.current('Title should not be empty');
+      handleNotification('Title should not be empty');
 
       return;
     }
@@ -103,7 +92,7 @@ export const App: React.FC = () => {
         return true;
       })
       .catch(() => {
-        handleNotification.current('Unable to add a todo');
+        handleNotification('Unable to add a todo');
 
         return false;
       })
@@ -121,7 +110,7 @@ export const App: React.FC = () => {
 
       setTodos(oldTodos => oldTodos.filter(todoFilter => todoFilter !== todo));
     } catch {
-      handleNotification.current('Unable to delete a todo');
+      handleNotification('Unable to delete a todo');
     } finally {
       setDeleteQueue(deleteQueue.filter(todoQueue => todoQueue !== todo));
     }
@@ -148,7 +137,7 @@ export const App: React.FC = () => {
 
       setTodos(oldTodos => [...oldTodos]);
     } catch {
-      handleNotification.current('Unable to update a todo');
+      handleNotification('Unable to update a todo');
     } finally {
       setToggleQueue(toggleQueue.filter(todoQueue => todoQueue !== todo));
     }
@@ -187,7 +176,7 @@ export const App: React.FC = () => {
 
       return true;
     } catch {
-      handleNotification.current('Unable to update a todo');
+      handleNotification('Unable to update a todo');
 
       return false;
     }
